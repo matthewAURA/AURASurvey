@@ -1,0 +1,126 @@
+
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>AURA Mentoring Survey</title>
+        <meta name="description" content="">
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <div class="header">
+            <h1>AURA Mentoring Survey</h1>
+
+        <div class="menu">
+
+        </div>
+        <script>
+            window.onload = function(event){
+               var scale = document.getElementById("range");
+               document.getElementById("rangeNumber").innerHTML = scale.value; scale.addEventListener("change",function(object){
+                    document.getElementById("rangeNumber").innerHTML = scale.value;
+                });
+            }
+
+            function save(){
+             //Get data
+                var data = [];
+                var inputs = ["name","school","position","email","phone","location","frequency",["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"outsidehelp","interested","webinterested","range"];
+
+                for (i in inputs){
+                    var input = inputs[i];
+                    if (typeof(input) == "object"){
+                        for (day in input){
+                            data.push(document.getElementById(input[day]).value);
+                        }
+                    }else{
+                        var object = document.getElementById(input);
+                        if (!object.checkValidity()){
+                            console.log([input,object]);
+                            object.scrollIntoView();
+                            return;
+                        }else{
+                            data.push(object.value);
+                        }
+                    }
+                }
+
+                console.log(data);
+
+                var fs = require('fs');
+
+
+                fs.appendFile("./data.txt", data + " \n", function(err) {
+                    if(err) {
+                        alert(err);
+                    }else{
+                        window.location = 'thanks.html'
+                    }
+                });
+            }
+        </script>
+        </div>
+        <div class="main">
+
+            <p>At AURA, one of our primary goals is to support high school robotics teams through mentoring programs.  If you're looking for support from a skilled and friendly bunch of Auckland University students, you may have to keep looking.  If you're willing to settle for AURA, fill in this form so Rob can get in touch.</p>
+        </div>
+        <div class="main">
+                Your Name:<input id="name" type="text" required></br>
+                Your school:<input id="school" type="text" required></br>
+
+                Your position on the team:<input id="position" type="text" placeholder="Student/teacher/parent etc" required></br>
+
+
+                Contact email:<input id="email" type="email" required></br>
+                Contact mobile phone:<input id="phone" type="tel" required></br>
+
+                Where is your school?<input id="location" type="text" placeholder="City/suburb" required></br>
+
+
+                Where/when/how often are your Vex build sessions?
+<select id="frequency" name="" required>
+  <option>Daily</option>
+  <option>3 - 5 Days per week</option>
+  <option>2 Days Per Week</option>
+  <option>1 Day Per Week</option>
+  <option>Less than 1 day per week</option>
+</select>
+
+                On which days each week do you build?
+                <div class="week">
+                Monday<input id="Monday" type="checkbox">
+                Tuesday<input id="Tuesday" type="checkbox">
+                Wednesday<input id="Wednesday" type="checkbox">
+                Thursday<input id="Thursday" type="checkbox">
+                Friday<input id="Friday" type="checkbox">
+                Saturday<input id="Saturday" type="checkbox">
+                Sunday<input id="Sunday" type="checkbox">
+                </div>
+
+                How big is your team? (How many members, parts available, etc)<textarea id="size" style="height:100px" required></textarea>
+
+                Do you ever get any outside help with Vex? If so, who helps you?<textarea id="outsidehelp" style="height:100px" required></textarea>
+
+                Are you interested in having a few AURA volunteers stopping by once every few weeks?<select id="interested" >
+  <option>Yes</option>
+  <option>No</option>
+  <option>I'm not from Auckland</option>
+</select>
+
+                Are you interested in getting help from AURA volunteers via the web? (email, skype etc)?<select id="webinterested" >
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+                From 1 (don't need at all) to 5 (desperate) how much do you want visits from AURA?<input id="range" type="range" min="1" max="5"><p id="rangeNumber" style="text-align:center">1</p>
+</div>
+    <div class="main">
+                Any questions, see Rob (or anyone else wearing an AURA t-shirt) or email rob.sawrey@aura.org.nz
+                Rob will try and wear something distinctive, like a rainbow hat.
+
+    <button onclick="save()" >Submit</button>
+
+    </div>
+    </body>
+</html>
